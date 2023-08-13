@@ -3,34 +3,31 @@ from random import shuffle
 import numpy as np
 
 
-def partition(array: list[int], start: int, end: int):
-    center = (start + end) // 2
-    pivot = array[center]
+def partition(array: list[int]):
+    pivot = array[-1]
 
-    left = start
-    right = end
-    while True:
-        while array[left] < pivot:
-            left += 1
+    idx = -1
 
-        while array[right] > pivot:
-            right -= 1
+    for n in range(len(array)-1):
+        if array[n] <= pivot:
+            idx += 1
+            array[idx], array[n] = array[n], array[idx]
 
-        if left >= right:
-            return left
+    idx += 1
+    array[idx], array[-1] = array[-1], array[idx]
 
-        array[left], array[right] = array[right], array[left]
+    return idx
 
 def quicksort(array: list[int]):
 
     if len(array) <= 1:
         return
 
-    p = partition(array, 0, len(array) - 1)
+    p = partition(array)
     quicksort(array[0:p])
     quicksort(array[p+1:])
 
-nums = list(range(1, 2000))
+nums = list(range(20))
 shuffle(nums)
 np_nums = np.array(nums)
 np_nums2 = np.array(nums)
